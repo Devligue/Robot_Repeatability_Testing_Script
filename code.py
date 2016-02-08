@@ -4,6 +4,8 @@ from PyQt4.QtGui import *
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtGui, QtCore
 
+filename = "GR02.txt" # <------------------ Here enter name of the file with logs for example 'GR02.txt', 'GR03.txt'.
+
 class Main(QtGui.QMainWindow):
     def __init__(self):
         super(Main, self).__init__()
@@ -60,15 +62,17 @@ class Main(QtGui.QMainWindow):
         # Algorithm to recalculate voltages into distance in [mm]
         raw_x = []
         raw_y = []
-        with open("GR03.txt") as tsvfile:
+        rows = 0
+        with open(filename) as tsvfile:
             tsvreader = csv.reader(tsvfile, delimiter="\t")
             for line in tsvreader:
                 raw_x.append(10*float(line[:1][0])/1.43)
                 raw_y.append(10*float(line[1:][0]))
+                rows += 1
 
         # Creation of time matrix
         time = []
-        t = range(68031)
+        t = range(rows)
         for k in t:
             time.append(0.002*(k+1))
         with open("time.txt", 'w') as f:
